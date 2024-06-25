@@ -7,6 +7,7 @@
 	var/STAEND = 10
 	var/STASPD = 10
 	var/STALUC = 10
+	var/STAWIS = 10 //changes for magic overhaul v
 	//buffers, the 'true' amount of each stat
 	var/BUFSTR = 0
 	var/BUFPER = 0
@@ -15,6 +16,7 @@
 	var/BUFEND = 0
 	var/BUFSPE = 0
 	var/BUFLUC = 0
+	var/BUFWIS = 0// here too
 	var/statbuf = FALSE
 	var/list/statindex = list()
 	var/datum/patron/patron = /datum/patron/godless
@@ -36,8 +38,8 @@
 	return TRUE
 
 /datum/species
-	var/list/specstats = list("strength" = 0, "perception" = 0, "intelligence" = 0, "constitution" = 0, "endurance" = 0, "speed" = 0, "fortune" = 0)
-	var/list/specstats_f = list("strength" = 0, "perception" = 0, "intelligence" = 0, "constitution" = 0, "endurance" = 0, "speed" = 0, "fortune" = 0)
+	var/list/specstats = list("strength" = 0, "perception" = 0, "intelligence" = 0, "constitution" = 0, "endurance" = 0, "speed" = 0, "fortune" = 0, "wisdom" = 0)
+	var/list/specstats_f = list("strength" = 0, "perception" = 0, "intelligence" = 0, "constitution" = 0, "endurance" = 0, "speed" = 0, "fortune" = 0, "wisdom" = 0)
 
 /mob/living/proc/roll_stats()
 	STASTR = 10
@@ -47,6 +49,8 @@
 	STAEND = 10
 	STASPD = 10
 	STALUC = 10
+	STAWIS = 10
+
 	for(var/S in MOBSTATS)
 		if(prob(33))
 			change_stat(S, 1)
@@ -75,6 +79,7 @@
 				change_stat("perception", -1)
 				change_stat("constitution", -2)
 				change_stat("intelligence", 2)
+				change_stat("wisdom", 2)
 		if(key)
 			if(check_blacklist(ckey(key)))
 				change_stat("strength", -5)
@@ -248,6 +253,26 @@
 				newamt--
 				BUFLUC++
 			STALUC = newamt
+
+		if("wisdom")// ratwood wisdom?
+			newamt = STAWIS + amt
+			if(BUFWIS < 0)
+				BUFWIS = BUFWIS + amt
+				if(BUFWIS > 0)
+					newamt = STAWIS + BUFWIS
+					BUFWIS = 0
+			if(BUFWIS > 0)
+				BUFWIS = BUFWIS + amt
+				if(BUFWIS < 0)
+					newamt = STAWIS + BUFWIS
+					BUFWIS = 0
+			while(newamt < 1)
+				newamt++
+				BUFWIS--
+			while(newamt > 20)
+				newamt--
+				BUFWIS++
+			STAWIS = newamt
 
 /proc/generic_stat_comparison(userstat as num, targetstat as num)
 	var/difference = userstat - targetstat

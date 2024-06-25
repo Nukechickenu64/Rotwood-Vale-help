@@ -526,6 +526,7 @@
 		stat("INT: \Roman [STAINT]")
 		stat("CON: \Roman [STACON]")
 		stat("END: \Roman [STAEND]")
+		stat("WIS: \Roman [STAWIS]")
 		stat("SPD: \Roman [STASPD]")
 		stat("PATRON: [patron]")
 

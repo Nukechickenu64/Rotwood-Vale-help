@@ -529,7 +529,7 @@
 
 /datum/action/spell_action/New(Target)
 	..()
-	var/obj/effect/proc_holder/S = target
+	var/obj/effect/proc_holder/spell/S = target
 	S.action = src
 	name = S.name
 	desc = S.desc
@@ -537,6 +537,8 @@
 	button_icon_state = S.action_icon_state
 	background_icon_state = S.action_background_icon_state
 	button.name = name
+	if(S.uses == -1)
+		button.maptext = num2text(S.uses)
 
 /datum/action/spell_action/Destroy()
 	var/obj/effect/proc_holder/S = target
